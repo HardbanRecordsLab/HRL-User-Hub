@@ -35,6 +35,20 @@ async def log_requests(request: Request, call_next):
 async def health():
     return {"status": "healthy", "service": "user-hub", "arch": "Unified HRL"}
 
+@app.get("/api/auth")
+async def get_auth_profile(email: str):
+    """
+    Standardowy endpoint autoryzacji - Proxy do Access Managera.
+    """
+    async with httpx.AsyncClient() as client:
+        try:
+            resp = await client.get(f"{ACCESS_MANAGER_URL}/api/auth/profile", params={"email": email})
+            if resp.status_code != 200:
+                raise HTTPException(status_code=resp.status_code, detail="Auth Service Error")
+            return resp.json()
+        except Exception as e:
+            raise HTTPException(status_code=503, detail=f"Access Manager Connection Error: {str(e)}")
+
 @app.post("/api/publish/submit")
 async def submit_release(data: dict, authorization: str = Header(None)):
     """

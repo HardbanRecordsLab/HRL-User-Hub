@@ -23,6 +23,7 @@
     },
     "skipLibCheck": true,
     "strict": false,
+    "verbatimModuleSyntax": false,
     "target": "ES2020",
     "useDefineForClassFields": true
   },

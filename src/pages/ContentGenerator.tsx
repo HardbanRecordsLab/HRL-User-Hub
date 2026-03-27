@@ -365,9 +365,3 @@ export default function ContentGenerator() {
     </DashboardLayout>
   );
 }
->
-        </div>
-      </div>
-    </div>
-  );
-}

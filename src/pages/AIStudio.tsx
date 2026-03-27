@@ -389,8 +389,3 @@ export default function AIStudio() {
     </DashboardLayout>
   );
 }
-     </motion.div>
-      </div>
-    </div>
-  );
-}

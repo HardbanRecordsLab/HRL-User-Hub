@@ -394,9 +394,3 @@ export default function StrategyGenerator() {
     </DashboardLayout>
   );
 }
-div>
-        </div>
-      </div>
-    </div>
-  );
-}

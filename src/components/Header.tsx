@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
-import logoColor from "@/assets/logo-color.png";
+import hrlLogo from "@/assets/hrl-logo.png";
 
 const navItems = [
   { label: "Funkcje", href: "#features" },

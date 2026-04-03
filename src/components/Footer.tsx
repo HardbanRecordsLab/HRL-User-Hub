@@ -27,7 +27,7 @@ const footerLinks = {
     { label: "Regulamin", href: "/terms", isAnchor: false },
     { label: "RODO", href: "/privacy", isAnchor: false },
     { label: "Licencje", href: "/terms", isAnchor: false },
-    { label: "Cookies", href: "/privacy", isAnchor: false },
+    { label: "Cookies", href: "/cookies", isAnchor: false },
   ],
 };
 

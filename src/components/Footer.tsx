@@ -116,8 +116,8 @@ export function Footer() {
               <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Warunki Użytkowania
               </Link>
-              <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Ustawienia Cookies
+              <Link to="/cookies" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Polityka Cookies
               </Link>
             </div>
           </div>

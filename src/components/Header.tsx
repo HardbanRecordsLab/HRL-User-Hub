@@ -43,7 +43,7 @@ export function Header() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-3"
           >
-            <img src="/logo.png" alt="HardbanRecords Lab" className="h-14 w-auto" />
+            <img src={hrlLogo} alt="HardbanRecords Lab" className="h-14 w-auto" />
           </motion.div>
 
           {/* Desktop Navigation */}

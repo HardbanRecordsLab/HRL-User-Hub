@@ -16,7 +16,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { session, user } = useAuth();
+  const { session, user } = useAuth() as any;
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState({

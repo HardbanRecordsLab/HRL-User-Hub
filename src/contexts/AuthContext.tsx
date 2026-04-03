@@ -3,6 +3,7 @@ import { useAuthStore } from "@/store/authStore";
 
 interface AuthContextType {
   token: string | null;
+  session: string | null;
   user: any;
   loading: boolean;
   logout: () => void;
@@ -10,6 +11,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({ 
   token: null, 
+  session: null,
   user: null, 
   loading: true,
   logout: () => {}
@@ -41,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [token, user?.email]);
 
   return (
-    <AuthContext.Provider value={{ token, user, loading, logout }}>
+    <AuthContext.Provider value={{ token, session: token, user, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );

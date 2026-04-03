@@ -125,7 +125,7 @@ export default function StrategyGenerator() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout title="Generator Strategii">
       <div className="space-y-8">
         {/* Header Section */}
         <motion.div

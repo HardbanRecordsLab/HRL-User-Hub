@@ -103,7 +103,7 @@ const MarketingDashboard = () => {
   ];
 
   return (
-    <DashboardLayout>
+    <DashboardLayout title="Marketing AI">
       <div className="space-y-8">
         {/* Header Section */}
         <motion.div

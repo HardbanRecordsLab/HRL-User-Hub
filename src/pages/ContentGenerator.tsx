@@ -135,7 +135,7 @@ export default function ContentGenerator() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout title="Generator Treści">
       <div className="space-y-8">
         {/* Header Section */}
         <motion.div

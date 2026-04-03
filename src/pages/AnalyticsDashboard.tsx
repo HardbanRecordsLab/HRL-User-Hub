@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { TrendingUp, Eye, Users, DollarSign, Activity, Globe, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
@@ -102,7 +103,7 @@ export default function AnalyticsDashboard() {
   ];
 
   return (
-    <DashboardLayout>
+    <DashboardLayout title="Dashboard Analityczny">
       <div className="space-y-8">
         {/* Header */}
         <motion.div

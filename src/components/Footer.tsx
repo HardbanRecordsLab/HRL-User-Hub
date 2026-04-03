@@ -47,7 +47,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <img src={logoColor} alt="HardbanRecords Lab" className="h-10 w-auto" />
+              <img src={hrlLogo} alt="HardbanRecords Lab" className="h-10 w-auto" />
             </div>
             <p className="text-muted-foreground mb-6 max-w-sm">
               Rewolucyjna platforma SaaS dla niezależnych twórców. Jedna platforma, pełna kontrola.

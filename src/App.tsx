@@ -18,7 +18,9 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import CookiesPolicy from "./pages/CookiesPolicy";
 import FAQ from "./pages/FAQ";
+import { CookieConsent } from "@/components/CookieConsent";
 
 // Lazy load heavy pages
 const Dashboard = lazy(() => import("./pages/Dashboard"));

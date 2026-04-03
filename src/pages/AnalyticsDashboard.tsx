@@ -103,7 +103,7 @@ export default function AnalyticsDashboard() {
   ];
 
   return (
-    <DashboardLayout>
+    <DashboardLayout title="Dashboard Analityczny">
       <div className="space-y-8">
         {/* Header */}
         <motion.div

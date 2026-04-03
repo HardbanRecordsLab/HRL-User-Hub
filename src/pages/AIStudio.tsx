@@ -166,7 +166,7 @@ export default function AIStudio() {
   ];
 
   return (
-    <DashboardLayout>
+    <DashboardLayout title="AI Studio">
       <div className="space-y-8">
         {/* Header Section */}
         <motion.div

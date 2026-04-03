@@ -1,6 +1,6 @@
 import { Facebook, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoColor from "@/assets/logo-color.png";
+import hrlLogo from "@/assets/hrl-logo.png";
 
 const footerLinks = {
   Produkt: [
@@ -27,7 +27,7 @@ const footerLinks = {
     { label: "Regulamin", href: "/terms", isAnchor: false },
     { label: "RODO", href: "/privacy", isAnchor: false },
     { label: "Licencje", href: "/terms", isAnchor: false },
-    { label: "Cookies", href: "/privacy", isAnchor: false },
+    { label: "Cookies", href: "/cookies", isAnchor: false },
   ],
 };
 
@@ -47,7 +47,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <img src={logoColor} alt="HardbanRecords Lab" className="h-10 w-auto" />
+              <img src={hrlLogo} alt="HardbanRecords Lab" className="h-10 w-auto" />
             </div>
             <p className="text-muted-foreground mb-6 max-w-sm">
               Rewolucyjna platforma SaaS dla niezależnych twórców. Jedna platforma, pełna kontrola.
@@ -116,8 +116,8 @@ export function Footer() {
               <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Warunki Użytkowania
               </Link>
-              <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Ustawienia Cookies
+              <Link to="/cookies" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Polityka Cookies
               </Link>
             </div>
           </div>

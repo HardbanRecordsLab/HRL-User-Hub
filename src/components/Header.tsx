@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
-import logoColor from "@/assets/logo-color.png";
+import hrlLogo from "@/assets/hrl-logo.png";
 
 const navItems = [
   { label: "Funkcje", href: "#features" },
@@ -43,7 +43,7 @@ export function Header() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-3"
           >
-            <img src="/logo.png" alt="HardbanRecords Lab" className="h-14 w-auto" />
+            <img src={hrlLogo} alt="HardbanRecords Lab" className="h-14 w-auto" />
           </motion.div>
 
           {/* Desktop Navigation */}

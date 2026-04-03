@@ -18,7 +18,9 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import CookiesPolicy from "./pages/CookiesPolicy";
 import FAQ from "./pages/FAQ";
+import { CookieConsent } from "@/components/CookieConsent";
 
 // Lazy load heavy pages
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -69,6 +71,7 @@ const App = () => (
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/cookies" element={<CookiesPolicy />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/artist/:username" element={
               <Suspense fallback={<PageLoader />}>
@@ -236,6 +239,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           </AuthProvider>
+          <CookieConsent />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

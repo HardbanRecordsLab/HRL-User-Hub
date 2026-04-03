@@ -20,17 +20,26 @@ export function Stats() {
 
   useEffect(() => {
     const loadStats = async () => {
-      const [profilesRes, releasesRes] = await Promise.all([
-        supabase.from("profiles").select("*", { count: "exact", head: true }),
-        supabase.from("music_releases").select("*", { count: "exact", head: true }).eq("status", "published"),
-      ]);
+      try {
+        const [profilesRes, releasesRes] = await Promise.all([
+          supabase.from("profiles").select("*"),
+          supabase.from("music_releases").select("*"),
+        ]);
 
-      setData({
-        artists: profilesRes.count || 0,
-        platforms: 38,
-        releases: releasesRes.count || 0,
-        satisfaction: 98,
-      });
+        const artistCount = Array.isArray(profilesRes.data) ? profilesRes.data.length : 0;
+        const releaseCount = Array.isArray(releasesRes.data)
+          ? releasesRes.data.filter((r: any) => r.status === "published").length
+          : 0;
+
+        setData({
+          artists: artistCount,
+          platforms: 38,
+          releases: releaseCount,
+          satisfaction: 98,
+        });
+      } catch (e) {
+        // keep defaults
+      }
     };
     loadStats();
   }, []);

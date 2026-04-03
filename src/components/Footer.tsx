@@ -1,6 +1,6 @@
 import { Facebook, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoColor from "@/assets/logo-color.png";
+import hrlLogo from "@/assets/hrl-logo.png";
 
 const footerLinks = {
   Produkt: [

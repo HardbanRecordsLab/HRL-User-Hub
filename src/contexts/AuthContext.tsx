@@ -3,6 +3,7 @@ import { useAuthStore } from "@/store/authStore";
 
 interface AuthContextType {
   token: string | null;
+  session: string | null;
   user: any;
   loading: boolean;
   logout: () => void;

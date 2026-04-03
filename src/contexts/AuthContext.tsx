@@ -11,6 +11,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({ 
   token: null, 
+  session: null,
   user: null, 
   loading: true,
   logout: () => {}

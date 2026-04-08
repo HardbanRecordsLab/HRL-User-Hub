@@ -11,7 +11,7 @@ load_dotenv()
 app = FastAPI(title="HRL User Hub (Unified SOP)", version="1.0.0")
 
 # Central Access Manager (Internal Docker Network)
-ACCESS_MANAGER_URL = os.getenv("ACCESS_MANAGER_URL", "http://hrl-webhook-hub-backend:9107")
+ACCESS_MANAGER_URL = os.getenv("ACCESS_MANAGER_URL", "http://localhost:9107")
 
 # Standard CORS for Premium SaaS
 app.add_middleware(

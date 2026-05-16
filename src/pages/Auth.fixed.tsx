@@ -4,7 +4,7 @@ export default function AuthPage() {
   useEffect(() => {
     const returnUrl = encodeURIComponent(window.location.href);
     const wpLoginUrl = import.meta.env.VITE_WP_LOGIN_URL || "https://hardbanrecordslab.online/login";
-    window.location.href = `${wpLoginUrl}?redirect_to=${returnUrl}`;
+    window.location.href = wpLoginUrl + '?redirect_to=' + returnUrl;
   }, []);
 
   return (
@@ -16,5 +16,3 @@ export default function AuthPage() {
     </div>
   );
 }
-
-

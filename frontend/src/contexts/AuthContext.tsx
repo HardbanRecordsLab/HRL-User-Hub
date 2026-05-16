@@ -38,11 +38,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const verifyToken = async () => {
     try {
-      // Pobieramy token z LocalStorage (zapasowo) lub Ciasteczka
-      const token = localStorage.getItem('jwt_token') || getCookie('jwt_token');
+      // 1. Sprawdź czy token jest w URL (fallback dla Vercel/SSO Redirect)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlToken = urlParams.get('token');
+
+      if (urlToken) {
+        localStorage.setItem('hrl_jwt_token', urlToken);
+        document.cookie = `jwt_token=${urlToken}; path=/; max-age=604800; SameSite=Lax; Secure`;
+        
+        // Wyczyść URL z tokena
+        const newUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, '', newUrl);
+      }
+
+      const token = localStorage.getItem('hrl_jwt_token') || getCookie('jwt_token');
       
       if (!token) {
-        throw new Error('Brak tokenu autoryzacyjnego');
+        setIsLoading(false);
+        return;
       }
 
       const response = await fetch(`${ACCESS_MANAGER_URL}/api/auth/verify`, {
@@ -53,39 +66,39 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
       });
 
-      if (!response.ok) {
-        throw new Error('Token nieważny lub wygasł');
+      if (response.status === 401) {
+        localStorage.removeItem('hrl_jwt_token');
+        const returnUrl = encodeURIComponent(window.location.href);
+        window.location.href = `${WP_LOGIN_URL}?redirect_to=${returnUrl}`;
+        return;
       }
 
-      const userData = await response.json();
-      setUser(userData);
-      setError(null);
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+        setError(null);
+      }
     } catch (err: any) {
       console.error("SSO Auth Error:", err.message);
-      setError(err.message);
-      setUser(null);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    // 1. Weryfikacja przy starcie
     verifyToken();
-
-    // 2. Poll co 60 sekund (odświeżanie sesji i pobieranie najnowszego stanu kredytów)
     const intervalId = setInterval(verifyToken, 60000);
-
     return () => clearInterval(intervalId);
   }, []);
 
   const login = () => {
-    window.location.href = WP_LOGIN_URL;
+    const returnUrl = encodeURIComponent(window.location.href);
+    window.location.href = `${WP_LOGIN_URL}?redirect_to=${returnUrl}`;
   };
 
   const logout = () => {
-    localStorage.removeItem('jwt_token');
-    document.cookie = 'jwt_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    localStorage.removeItem('hrl_jwt_token');
+    document.cookie = 'jwt_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.hardbanrecordslab.online;';
     setUser(null);
     window.location.href = WP_LOGIN_URL;
   };

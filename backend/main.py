@@ -54,7 +54,7 @@ async def submit_release(data: dict, authorization: str = Header(None)):
     """
     Submission wydawniczy - Wzorcowa implementacja akcji kredytowej.
     """
-    email = data.get("email") # To zostanie wyciągnięte z JWT (Krok SSO)
+    email = data.get("email") # Local app auth provides this value
     if not email:
         raise HTTPException(status_code=400, detail="User email required for submission")
 

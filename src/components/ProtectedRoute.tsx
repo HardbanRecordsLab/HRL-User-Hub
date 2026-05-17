@@ -14,7 +14,6 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Jeśli brak tokena SSO - przekieruj do strony logowania HRL / WordPress
   if (!token) {
     return <Navigate to="/auth" replace />;
   }

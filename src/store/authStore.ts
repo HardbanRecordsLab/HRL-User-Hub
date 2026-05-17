@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { hrlServices } from '@/lib/apiClient';
 
 export interface HRLUser {
   email: string;
@@ -25,48 +24,42 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       token: null,
       user: null,
       loading: true,
       setToken: (token) => {
         set({ token });
         if (token) {
-          localStorage.setItem('hrl_sso_token', token);
+          localStorage.setItem('hrl_local_app_auth', token);
         } else {
-          localStorage.removeItem('hrl_sso_token');
+          localStorage.removeItem('hrl_local_app_auth');
         }
       },
       setUser: (user) => set({ user }),
       setLoading: (loading) => set({ loading }),
       checkAuth: async () => {
-        const token = localStorage.getItem('hrl_sso_token');
-        if (!token) {
-          set({ loading: false, user: null, token: null });
-          return;
-        }
-
-        set({ loading: true, token });
-        try {
-          // W docelowej wersji wyciągamy email z zdekodowanego JWT
-          // Na potrzeby MVP/Testów używamy zapisanego maila lub mocka
-          const email = localStorage.getItem('hrl_user_email') || 'contact@hardbanrecordslab.online';
-          
-          const response = await hrlServices.getProfile(email);
-          if (response.data) {
-            set({ user: response.data, loading: false });
-          }
-        } catch (error) {
-          console.error('HRL Unified Auth Error:', error);
-          set({ loading: false, user: null, token: null });
-          localStorage.removeItem('hrl_sso_token');
-        }
+        const token = localStorage.getItem('hrl_local_app_auth') || 'hrl-local-app-token';
+        localStorage.setItem('hrl_local_app_auth', token);
+        set({
+          loading: false,
+          token,
+          user: {
+            email: 'local@hardbanrecordslab.online',
+            credits: 999999,
+            tier: 'label',
+            is_premium: true,
+            pmp_level: 'Local App Access',
+            trial_status: 'active',
+            all_apps_access: true,
+          },
+        });
       },
       logout: () => {
-        localStorage.removeItem('hrl_sso_token');
+        localStorage.removeItem('hrl_local_app_auth');
         localStorage.removeItem('hrl_user_email');
         set({ token: null, user: null });
-        window.location.href = 'https://hardbanrecordslab.online'; // Powrót do głównego portalu
+        window.location.href = '/';
       },
     }),
     {

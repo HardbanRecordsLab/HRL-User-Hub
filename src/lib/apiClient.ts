@@ -6,7 +6,7 @@ const ACCESS_MANAGER_URL = import.meta.env.VITE_ACCESS_MANAGER_API || 'https://h
 
 /**
  * Centalny klient API HRL Unified Experience.
- * Automatycznie dołącza token JWT (z WordPress SSO) do każdego zapytania.
+ * Automatycznie dolacza lokalny token aplikacji do kazdego zapytania.
  */
 export const apiClient = axios.create({
   baseURL: USER_HUB_URL,
@@ -24,11 +24,10 @@ export const accessApi = axios.create({
 });
 
 /**
- * Interceptor do autoryzacji SSO.
- * W docelowej wersji pobiera token z ciasteczka lub localStorage ustawionego przez WP.
+ * Interceptor do lokalnej autoryzacji aplikacji.
  */
 const authInterceptor = (config: any) => {
-  const token = localStorage.getItem('hrl_sso_token');
+  const token = localStorage.getItem('hrl_local_app_auth');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

@@ -150,7 +150,7 @@ export default function AdminPanel() {
     );
   }
 
-  const statCards = [
+  const statCards: Array<{ label: string; value: string | number; icon: any; color: string; highlight?: boolean }> = [
     { label: "Użytkownicy", value: stats?.users ?? 0, icon: Users, color: "text-blue-500" },
     { label: "Wszystkie wydania", value: stats?.releases ?? 0, icon: Music, color: "text-purple-500" },
     { label: "Oczekujące review", value: stats?.pendingReview ?? 0, icon: ShieldCheck, color: "text-amber-500", highlight: (stats?.pendingReview ?? 0) > 0 },

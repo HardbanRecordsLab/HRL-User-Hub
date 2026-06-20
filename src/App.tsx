@@ -26,6 +26,7 @@ import { CookieConsent } from "@/components/CookieConsent";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const MusicDashboard = lazy(() => import("./pages/MusicDashboard"));
 const AdminMusicReview = lazy(() => import("./pages/AdminMusicReview"));
+const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 const AIStudio = lazy(() => import("./pages/AIStudio"));
 const StrategyGenerator = lazy(() => import("./pages/StrategyGenerator"));
 const ContentGenerator = lazy(() => import("./pages/ContentGenerator"));

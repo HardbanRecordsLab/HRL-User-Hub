@@ -122,7 +122,7 @@ export default function AdminPanel() {
   const promoteByEmail = async () => {
     const email = window.prompt("Podaj email użytkownika do nadania roli admin:");
     if (!email) return;
-    const { data: prof, error } = await supabase
+    const { data: prof, error } = await (supabase as any)
       .from("profiles")
       .select("id,full_name")
       .eq("email", email.trim().toLowerCase())

@@ -119,6 +119,13 @@ const App = () => (
                 </Suspense>
               </ProtectedRoute>
             } />
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <AdminPanel />
+                </Suspense>
+              </ProtectedRoute>
+            } />
             <Route path="/admin/music-review" element={
               <ProtectedRoute>
                 <Suspense fallback={<PageLoader />}>

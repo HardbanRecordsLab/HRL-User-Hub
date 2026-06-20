@@ -199,6 +199,19 @@ export default function MusicDashboard() {
 
       if (error) throw error;
 
+      // Best-effort webhook to external HRL distribution backend.
+      // Failures are logged but never block the user flow.
+      try {
+        const { hrlServices } = await import("@/lib/apiClient");
+        await hrlServices.submitRelease({
+          release_id: releaseId,
+          user_id: user?.id,
+          submitted_at: new Date().toISOString(),
+        });
+      } catch (webhookErr) {
+        console.warn("HRL distribution webhook failed (non-blocking):", webhookErr);
+      }
+
       toast({
         title: "Wysłano do weryfikacji!",
         description: "Twoje wydanie zostało przesłane do weryfikacji przez HardbanRecords Lab",

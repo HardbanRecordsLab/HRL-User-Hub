@@ -1,49 +1,30 @@
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext } from "react";
 import { useAuthStore } from "@/store/authStore";
+import type { Session } from "@supabase/supabase-js";
 
 interface AuthContextType {
   token: string | null;
-  session: string | null;
+  session: Session | null;
   user: any;
   loading: boolean;
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType>({ 
-  token: null, 
+const AuthContext = createContext<AuthContextType>({
+  token: null,
   session: null,
-  user: null, 
+  user: null,
   loading: true,
-  logout: () => {}
+  logout: () => {},
 });
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within HRLAuthProvider");
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { token, user, loading, checkAuth, logout } = useAuthStore();
-
-  useEffect(() => {
-    // KROK 3: Inicjalizacja sesji HRL Unified
-    checkAuth();
-
-    // Możemy tu dodać pooling dla kredytów (odświeżanie co minutę)
-    const interval = setInterval(() => {
-        if (token && user?.email) {
-            checkAuth();
-        }
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, [token, user?.email]);
+  const { token, session, user, loading, logout } = useAuthStore();
 
   return (
-    <AuthContext.Provider value={{ token, session: token, user, loading, logout }}>
+    <AuthContext.Provider value={{ token, session, user, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );

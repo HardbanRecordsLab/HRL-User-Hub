@@ -655,6 +655,13 @@ export default function MusicDashboard() {
           </div>
         )}
       </AnimatePresence>
+
+      <MarketingRecommendationsDialog
+        open={!!marketingFor}
+        onOpenChange={(open) => !open && setMarketingFor(null)}
+        release={marketingFor}
+      />
     </DashboardLayout>
+
   );
 }

@@ -22,7 +22,8 @@ import {
   Image as ImageIcon,
   Send,
   Disc,
-  Headphones
+  Headphones,
+  Sparkles
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -33,6 +34,8 @@ import {
   MAX_FILE_SIZES 
 } from "@/lib/fileValidation";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { MarketingRecommendationsDialog } from "@/components/MarketingRecommendationsDialog";
+
 
 export default function MusicDashboard() {
   const { user } = useAuth();
@@ -41,6 +44,8 @@ export default function MusicDashboard() {
   const [loading, setLoading] = useState(false);
   const [releases, setReleases] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [marketingFor, setMarketingFor] = useState<any | null>(null);
+
   const [formData, setFormData] = useState({
     title: "",
     artist_name: "",
@@ -539,9 +544,26 @@ export default function MusicDashboard() {
                         <span className="text-xs text-blue-400 font-medium">Oczekuje na zatwierdzenie zespołu</span>
                       </div>
                     )}
+                    {['approved', 'published'].includes(release.status) && (
+                      <div className="flex items-center gap-2 p-2 bg-emerald-500/10 rounded-md border border-emerald-500/20">
+                        <CheckSquare className="w-4 h-4 text-emerald-400" />
+                        <span className="text-xs text-emerald-400 font-medium capitalize">{release.status}</span>
+                      </div>
+                    )}
+
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="w-full mt-2 text-indigo-300 hover:text-indigo-200 hover:bg-indigo-500/10"
+                      onClick={() => setMarketingFor(release)}
+                    >
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      AI Rekomendacje Marketingu
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
+
             </motion.div>
           ))}
         </div>

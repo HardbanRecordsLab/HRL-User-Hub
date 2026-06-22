@@ -48,14 +48,15 @@ export default function AdminMusicReview() {
   const checkAdminStatus = async () => {
     if (!user) return;
 
-    const { data, error } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", user.id)
-      .eq("role", "admin")
-      .single();
+    // Server-side role check via SECURITY DEFINER RPC (cannot be bypassed
+    // by tampering with client-side queries). RLS policies on sensitive
+    // tables additionally enforce admin-only access at the database layer.
+    const { data, error } = await supabase.rpc("has_role", {
+      _user_id: user.id,
+      _role: "admin",
+    });
 
-    if (data) {
+    if (!error && data === true) {
       setIsAdmin(true);
     } else {
       toast({
@@ -66,6 +67,7 @@ export default function AdminMusicReview() {
       navigate("/dashboard");
     }
   };
+
 
   const loadPendingReleases = async () => {
     const { data, error } = await supabase

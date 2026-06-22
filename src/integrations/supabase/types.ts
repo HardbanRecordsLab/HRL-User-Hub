@@ -839,6 +839,7 @@ export type Database = {
           created_at: string | null
           full_name: string | null
           id: string
+          is_public: boolean
           label_name: string | null
           role: Database["public"]["Enums"]["user_role"] | null
           social_links: Json | null
@@ -853,6 +854,7 @@ export type Database = {
           created_at?: string | null
           full_name?: string | null
           id: string
+          is_public?: boolean
           label_name?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
           social_links?: Json | null
@@ -867,6 +869,7 @@ export type Database = {
           created_at?: string | null
           full_name?: string | null
           id?: string
+          is_public?: boolean
           label_name?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
           social_links?: Json | null

@@ -1049,8 +1049,13 @@ export type Database = {
           created_at: string | null
           currency: string | null
           description: string | null
+          gross_amount: number | null
           id: string
           metadata: Json | null
+          net_to_artist: number | null
+          platform_fee_amount: number | null
+          platform_fee_pct: number
+          release_id: string | null
           source: string
           source_id: string | null
           transaction_date: string
@@ -1062,8 +1067,13 @@ export type Database = {
           created_at?: string | null
           currency?: string | null
           description?: string | null
+          gross_amount?: number | null
           id?: string
           metadata?: Json | null
+          net_to_artist?: number | null
+          platform_fee_amount?: number | null
+          platform_fee_pct?: number
+          release_id?: string | null
           source: string
           source_id?: string | null
           transaction_date: string
@@ -1075,15 +1085,28 @@ export type Database = {
           created_at?: string | null
           currency?: string | null
           description?: string | null
+          gross_amount?: number | null
           id?: string
           metadata?: Json | null
+          net_to_artist?: number | null
+          platform_fee_amount?: number | null
+          platform_fee_pct?: number
+          release_id?: string | null
           source?: string
           source_id?: string | null
           transaction_date?: string
           updated_at?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "revenue_transactions_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "music_releases"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       strategies: {
         Row: {

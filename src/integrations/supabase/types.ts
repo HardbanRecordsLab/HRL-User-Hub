@@ -952,6 +952,97 @@ export type Database = {
           },
         ]
       }
+      release_splits: {
+        Row: {
+          accepted: boolean
+          accepted_at: string | null
+          collaborator_email: string | null
+          collaborator_name: string
+          created_at: string
+          id: string
+          notes: string | null
+          paid_amount: number
+          percentage: number
+          release_id: string
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          accepted?: boolean
+          accepted_at?: string | null
+          collaborator_email?: string | null
+          collaborator_name: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          paid_amount?: number
+          percentage: number
+          release_id: string
+          role?: string
+          updated_at?: string
+        }
+        Update: {
+          accepted?: boolean
+          accepted_at?: string | null
+          collaborator_email?: string | null
+          collaborator_name?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          paid_amount?: number
+          percentage?: number
+          release_id?: string
+          role?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "release_splits_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "music_releases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      release_status_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_status: string
+          note: string | null
+          previous_status: string | null
+          release_id: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status: string
+          note?: string | null
+          previous_status?: string | null
+          release_id: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status?: string
+          note?: string | null
+          previous_status?: string | null
+          release_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "release_status_history_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "music_releases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       revenue_transactions: {
         Row: {
           amount: number
@@ -1132,6 +1223,9 @@ export type Database = {
         | "approved"
         | "published"
         | "rejected"
+        | "pending_review"
+        | "distributed"
+        | "live"
       user_role: "artist" | "label" | "admin" | "user"
     }
     CompositeTypes: {
@@ -1270,6 +1364,9 @@ export const Constants = {
         "approved",
         "published",
         "rejected",
+        "pending_review",
+        "distributed",
+        "live",
       ],
       user_role: ["artist", "label", "admin", "user"],
     },

@@ -35,6 +35,8 @@ import {
 } from "@/lib/fileValidation";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { MarketingRecommendationsDialog } from "@/components/MarketingRecommendationsDialog";
+import { ReleaseSplitsDialog } from "@/components/ReleaseSplitsDialog";
+import { Users } from "lucide-react";
 
 
 export default function MusicDashboard() {
@@ -45,6 +47,7 @@ export default function MusicDashboard() {
   const [releases, setReleases] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [marketingFor, setMarketingFor] = useState<any | null>(null);
+  const [splitsFor, setSplitsFor] = useState<any | null>(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -560,6 +563,15 @@ export default function MusicDashboard() {
                       <Sparkles className="mr-2 h-4 w-4" />
                       AI Rekomendacje Marketingu
                     </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="w-full mt-1 text-amber-300 hover:text-amber-200 hover:bg-amber-500/10"
+                      onClick={() => setSplitsFor(release)}
+                    >
+                      <Users className="mr-2 h-4 w-4" />
+                      Splity & Historia
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -660,6 +672,11 @@ export default function MusicDashboard() {
         open={!!marketingFor}
         onOpenChange={(open) => !open && setMarketingFor(null)}
         release={marketingFor}
+      />
+      <ReleaseSplitsDialog
+        open={!!splitsFor}
+        onClose={() => setSplitsFor(null)}
+        release={splitsFor}
       />
     </DashboardLayout>
 

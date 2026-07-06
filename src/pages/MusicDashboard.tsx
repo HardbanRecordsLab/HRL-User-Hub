@@ -35,6 +35,8 @@ import {
 } from "@/lib/fileValidation";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { MarketingRecommendationsDialog } from "@/components/MarketingRecommendationsDialog";
+import { ReleaseSplitsDialog } from "@/components/ReleaseSplitsDialog";
+import { Users } from "lucide-react";
 
 
 export default function MusicDashboard() {

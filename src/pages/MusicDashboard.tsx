@@ -673,6 +673,11 @@ export default function MusicDashboard() {
         onOpenChange={(open) => !open && setMarketingFor(null)}
         release={marketingFor}
       />
+      <ReleaseSplitsDialog
+        open={!!splitsFor}
+        onClose={() => setSplitsFor(null)}
+        release={splitsFor}
+      />
     </DashboardLayout>
 
   );

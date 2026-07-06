@@ -47,6 +47,7 @@ export default function MusicDashboard() {
   const [releases, setReleases] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [marketingFor, setMarketingFor] = useState<any | null>(null);
+  const [splitsFor, setSplitsFor] = useState<any | null>(null);
 
   const [formData, setFormData] = useState({
     title: "",

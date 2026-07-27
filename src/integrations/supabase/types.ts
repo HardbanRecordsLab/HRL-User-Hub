@@ -722,6 +722,45 @@ export type Database = {
         }
         Relationships: []
       }
+      partnership_agreements: {
+        Row: {
+          accepted_at: string
+          agreement_text: string
+          commission_percentage: number
+          created_at: string
+          id: string
+          ip_address: string | null
+          status: string
+          user_agent: string | null
+          user_id: string
+          version: string
+        }
+        Insert: {
+          accepted_at?: string
+          agreement_text: string
+          commission_percentage?: number
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          status?: string
+          user_agent?: string | null
+          user_id: string
+          version?: string
+        }
+        Update: {
+          accepted_at?: string
+          agreement_text?: string
+          commission_percentage?: number
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          status?: string
+          user_agent?: string | null
+          user_id?: string
+          version?: string
+        }
+        Relationships: []
+      }
       podcast_episodes: {
         Row: {
           audio_url: string | null
@@ -836,13 +875,20 @@ export type Database = {
           artist_name: string | null
           avatar_url: string | null
           bio: string | null
+          country: string | null
           created_at: string | null
           full_name: string | null
+          iban: string | null
+          iban_holder: string | null
           id: string
           is_public: boolean
           label_name: string | null
+          legal_name: string | null
+          onboarding_completed_at: string | null
+          payout_currency: string | null
           role: Database["public"]["Enums"]["user_role"] | null
           social_links: Json | null
+          tax_id: string | null
           updated_at: string | null
           username: string | null
           website: string | null
@@ -851,13 +897,20 @@ export type Database = {
           artist_name?: string | null
           avatar_url?: string | null
           bio?: string | null
+          country?: string | null
           created_at?: string | null
           full_name?: string | null
+          iban?: string | null
+          iban_holder?: string | null
           id: string
           is_public?: boolean
           label_name?: string | null
+          legal_name?: string | null
+          onboarding_completed_at?: string | null
+          payout_currency?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
           social_links?: Json | null
+          tax_id?: string | null
           updated_at?: string | null
           username?: string | null
           website?: string | null
@@ -866,13 +919,20 @@ export type Database = {
           artist_name?: string | null
           avatar_url?: string | null
           bio?: string | null
+          country?: string | null
           created_at?: string | null
           full_name?: string | null
+          iban?: string | null
+          iban_holder?: string | null
           id?: string
           is_public?: boolean
           label_name?: string | null
+          legal_name?: string | null
+          onboarding_completed_at?: string | null
+          payout_currency?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
           social_links?: Json | null
+          tax_id?: string | null
           updated_at?: string | null
           username?: string | null
           website?: string | null

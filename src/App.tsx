@@ -49,6 +49,7 @@ const Settings = lazy(() => import("./pages/Settings"));
 const MarketingDashboard = lazy(() => import("./pages/MarketingDashboard"));
 const ArtistProfile = lazy(() => import("./pages/ArtistProfile"));
 const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
+const Onboarding = lazy(() => import("./pages/Onboarding"));
 
 const queryClient = new QueryClient(queryClientConfig);
 
@@ -116,6 +117,13 @@ const App = () => (
               <ProtectedRoute>
                 <Suspense fallback={<PageLoader />}>
                   <Settings />
+                </Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/onboarding" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <Onboarding />
                 </Suspense>
               </ProtectedRoute>
             } />

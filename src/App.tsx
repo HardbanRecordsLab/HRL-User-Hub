@@ -27,6 +27,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const MusicDashboard = lazy(() => import("./pages/MusicDashboard"));
 const AdminMusicReview = lazy(() => import("./pages/AdminMusicReview"));
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
+const AdminAgreements = lazy(() => import("./pages/AdminAgreements"));
 const AIStudio = lazy(() => import("./pages/AIStudio"));
 const StrategyGenerator = lazy(() => import("./pages/StrategyGenerator"));
 const ContentGenerator = lazy(() => import("./pages/ContentGenerator"));
@@ -138,6 +139,13 @@ const App = () => (
               <ProtectedRoute>
                 <Suspense fallback={<PageLoader />}>
                   <AdminMusicReview />
+                </Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/agreements" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <AdminAgreements />
                 </Suspense>
               </ProtectedRoute>
             } />

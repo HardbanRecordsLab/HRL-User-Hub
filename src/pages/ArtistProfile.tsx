@@ -73,7 +73,7 @@ export default function ArtistProfile() {
     );
   }
 
-  const displayName = profile.artist_name || profile.full_name || profile.username || "Artysta";
+  const displayName = profile.artist_name || profile.username || "Artysta";
   const initials = displayName.slice(0, 2).toUpperCase();
 
   const socialIcons: Record<string, string> = {

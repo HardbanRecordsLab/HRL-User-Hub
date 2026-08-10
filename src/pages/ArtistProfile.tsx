@@ -206,12 +206,6 @@ export default function ArtistProfile() {
                             <Badge key={g} variant="outline" className="text-xs">{g}</Badge>
                           ))}
                         </div>
-                        {streams > 0 && (
-                          <div className="flex items-center gap-1 mt-3 text-xs text-muted-foreground">
-                            <TrendingUp className="h-3 w-3" />
-                            {streams.toLocaleString()} streams
-                          </div>
-                        )}
                       </CardContent>
                     </Card>
                   </motion.div>

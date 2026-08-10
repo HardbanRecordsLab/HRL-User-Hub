@@ -174,7 +174,6 @@ export default function ArtistProfile() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {releases.map((release, i) => {
                 return (
-                return (
                   <motion.div
                     key={release.id}
                     initial={{ opacity: 0, y: 20 }}

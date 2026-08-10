@@ -142,7 +142,7 @@ export default function ArtistProfile() {
         >
           {[
             { label: "Wydania", value: releases?.length || 0, icon: Disc3 },
-            { label: "Streamy", value: totalStreams.toLocaleString(), icon: Headphones },
+            { label: "Albumy", value: (releases || []).filter(r => r.album_type === "album").length, icon: Headphones },
             { label: "Gatunki", value: [...new Set(releases?.flatMap(r => r.genre || []) || [])].length, icon: Music },
             { label: "Na platformie od", value: new Date(profile.created_at || "").getFullYear(), icon: Calendar },
           ].map((stat, i) => (

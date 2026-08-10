@@ -53,6 +53,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "ai_content_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       analytics_events: {
@@ -86,6 +93,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "analytics_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -136,6 +150,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "api_integrations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -189,6 +210,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automation_workflows_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -268,6 +296,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "contacts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       content_library: {
@@ -343,6 +378,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "content_library_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       digital_publications: {
@@ -403,6 +445,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "digital_publications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -468,10 +517,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "distribution_releases_music_release_id_fkey"
+            columns: ["music_release_id"]
+            isOneToOne: false
+            referencedRelation: "public_music_releases"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "distribution_releases_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "distribution_releases_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -522,6 +585,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "journalists_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -590,6 +660,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketing_campaigns_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -682,6 +759,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "music_releases_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -815,6 +899,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "podcast_episodes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       press_releases: {
@@ -866,6 +957,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "press_releases_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1010,6 +1108,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "publication_calendar_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       release_splits: {
@@ -1063,6 +1168,13 @@ export type Database = {
             referencedRelation: "music_releases"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "release_splits_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "public_music_releases"
+            referencedColumns: ["id"]
+          },
         ]
       }
       release_status_history: {
@@ -1099,6 +1211,13 @@ export type Database = {
             columns: ["release_id"]
             isOneToOne: false
             referencedRelation: "music_releases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "release_status_history_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "public_music_releases"
             referencedColumns: ["id"]
           },
         ]
@@ -1164,6 +1283,13 @@ export type Database = {
             columns: ["release_id"]
             isOneToOne: false
             referencedRelation: "music_releases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "revenue_transactions_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "public_music_releases"
             referencedColumns: ["id"]
           },
         ]
@@ -1273,6 +1399,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "strategies_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       user_roles: {
@@ -1322,7 +1455,99 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_artist_profiles: {
+        Row: {
+          artist_name: string | null
+          avatar_url: string | null
+          bio: string | null
+          created_at: string | null
+          id: string | null
+          label_name: string | null
+          social_links: Json | null
+          username: string | null
+          website: string | null
+        }
+        Insert: {
+          artist_name?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          id?: string | null
+          label_name?: string | null
+          social_links?: Json | null
+          username?: string | null
+          website?: string | null
+        }
+        Update: {
+          artist_name?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          id?: string | null
+          label_name?: string | null
+          social_links?: Json | null
+          username?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      public_music_releases: {
+        Row: {
+          album_type: string | null
+          artist_name: string | null
+          cover_image_url: string | null
+          created_at: string | null
+          description: string | null
+          genre: string[] | null
+          id: string | null
+          release_date: string | null
+          status: Database["public"]["Enums"]["release_status"] | null
+          title: string | null
+          user_id: string | null
+        }
+        Insert: {
+          album_type?: string | null
+          artist_name?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          genre?: string[] | null
+          id?: string | null
+          release_date?: string | null
+          status?: Database["public"]["Enums"]["release_status"] | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          album_type?: string | null
+          artist_name?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          genre?: string[] | null
+          id?: string | null
+          release_date?: string | null
+          status?: Database["public"]["Enums"]["release_status"] | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "music_releases_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "music_releases_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_artist_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       assign_user_role: {

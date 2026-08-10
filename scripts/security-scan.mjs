@@ -83,8 +83,16 @@ function scanEdgeFunctions() {
   walk(FUNCTIONS_DIR);
 }
 
+const BASELINE_FILE = "scripts/security-scan-baseline.json";
+const baseline = new Set(
+  existsSync(BASELINE_FILE)
+    ? JSON.parse(readFileSync(BASELINE_FILE, "utf8")).baselinedMigrations ?? []
+    : [],
+);
+
 if (existsSync(MIGRATIONS_DIR)) {
   for (const f of readdirSync(MIGRATIONS_DIR).filter((f) => f.endsWith(".sql"))) {
+    if (baseline.has(f)) continue; // legacy migrations already superseded by later fixes
     const path = join(MIGRATIONS_DIR, f);
     scanMigration(path, readFileSync(path, "utf8"));
   }

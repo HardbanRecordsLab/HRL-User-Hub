@@ -29,7 +29,7 @@ export default function ArtistProfile() {
     queryKey: ["artist-profile", username],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("profiles")
+        .from("public_artist_profiles")
         .select("*")
         .or(`username.eq.${username},artist_name.eq.${username}`)
         .maybeSingle();
@@ -43,10 +43,9 @@ export default function ArtistProfile() {
     queryKey: ["artist-releases", profile?.id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("music_releases")
+        .from("public_music_releases")
         .select("*")
         .eq("user_id", profile!.id)
-        .eq("status", "published")
         .order("release_date", { ascending: false });
       if (error) throw error;
       return data;
@@ -55,10 +54,6 @@ export default function ArtistProfile() {
   });
 
   const socialLinks = (profile?.social_links as SocialLinks) || {};
-  const totalStreams = releases?.reduce((sum, r) => {
-    const stats = r.streaming_stats as Record<string, number> | null;
-    return sum + (stats?.total_streams || 0);
-  }, 0) || 0;
 
   if (profileLoading) {
     return (

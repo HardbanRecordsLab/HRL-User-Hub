@@ -1168,6 +1168,51 @@ export type Database = {
           },
         ]
       }
+      security_audit_log: {
+        Row: {
+          action: string | null
+          actor_id: string | null
+          actor_role: string | null
+          created_at: string
+          details: Json | null
+          event_type: string
+          id: string
+          new_value: Json | null
+          object_identity: string | null
+          object_type: string | null
+          old_value: Json | null
+          succeeded: boolean
+        }
+        Insert: {
+          action?: string | null
+          actor_id?: string | null
+          actor_role?: string | null
+          created_at?: string
+          details?: Json | null
+          event_type: string
+          id?: string
+          new_value?: Json | null
+          object_identity?: string | null
+          object_type?: string | null
+          old_value?: Json | null
+          succeeded?: boolean
+        }
+        Update: {
+          action?: string | null
+          actor_id?: string | null
+          actor_role?: string | null
+          created_at?: string
+          details?: Json | null
+          event_type?: string
+          id?: string
+          new_value?: Json | null
+          object_identity?: string | null
+          object_type?: string | null
+          old_value?: Json | null
+          succeeded?: boolean
+        }
+        Relationships: []
+      }
       strategies: {
         Row: {
           budget_allocation: Json | null
@@ -1293,6 +1338,19 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      log_security_event: {
+        Args: {
+          _action?: string
+          _details?: Json
+          _event_type: string
+          _new_value?: Json
+          _object_identity?: string
+          _object_type?: string
+          _old_value?: Json
+          _succeeded?: boolean
+        }
+        Returns: undefined
       }
     }
     Enums: {

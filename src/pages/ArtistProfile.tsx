@@ -29,7 +29,7 @@ export default function ArtistProfile() {
     queryKey: ["artist-profile", username],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("profiles")
+        .from("public_artist_profiles")
         .select("*")
         .or(`username.eq.${username},artist_name.eq.${username}`)
         .maybeSingle();
@@ -43,10 +43,9 @@ export default function ArtistProfile() {
     queryKey: ["artist-releases", profile?.id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("music_releases")
+        .from("public_music_releases")
         .select("*")
         .eq("user_id", profile!.id)
-        .eq("status", "published")
         .order("release_date", { ascending: false });
       if (error) throw error;
       return data;
@@ -55,10 +54,6 @@ export default function ArtistProfile() {
   });
 
   const socialLinks = (profile?.social_links as SocialLinks) || {};
-  const totalStreams = releases?.reduce((sum, r) => {
-    const stats = r.streaming_stats as Record<string, number> | null;
-    return sum + (stats?.total_streams || 0);
-  }, 0) || 0;
 
   if (profileLoading) {
     return (
@@ -78,7 +73,7 @@ export default function ArtistProfile() {
     );
   }
 
-  const displayName = profile.artist_name || profile.full_name || profile.username || "Artysta";
+  const displayName = profile.artist_name || profile.username || "Artysta";
   const initials = displayName.slice(0, 2).toUpperCase();
 
   const socialIcons: Record<string, string> = {
@@ -147,7 +142,7 @@ export default function ArtistProfile() {
         >
           {[
             { label: "Wydania", value: releases?.length || 0, icon: Disc3 },
-            { label: "Streamy", value: totalStreams.toLocaleString(), icon: Headphones },
+            { label: "Albumy", value: (releases || []).filter(r => r.album_type === "album").length, icon: Headphones },
             { label: "Gatunki", value: [...new Set(releases?.flatMap(r => r.genre || []) || [])].length, icon: Music },
             { label: "Na platformie od", value: new Date(profile.created_at || "").getFullYear(), icon: Calendar },
           ].map((stat, i) => (
@@ -178,7 +173,6 @@ export default function ArtistProfile() {
           {releases && releases.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {releases.map((release, i) => {
-                const streams = (release.streaming_stats as Record<string, number> | null)?.total_streams || 0;
                 return (
                   <motion.div
                     key={release.id}
@@ -211,12 +205,6 @@ export default function ArtistProfile() {
                             <Badge key={g} variant="outline" className="text-xs">{g}</Badge>
                           ))}
                         </div>
-                        {streams > 0 && (
-                          <div className="flex items-center gap-1 mt-3 text-xs text-muted-foreground">
-                            <TrendingUp className="h-3 w-3" />
-                            {streams.toLocaleString()} streams
-                          </div>
-                        )}
                       </CardContent>
                     </Card>
                   </motion.div>

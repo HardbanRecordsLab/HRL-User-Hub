@@ -22,14 +22,12 @@ export function Stats() {
     const loadStats = async () => {
       try {
         const [profilesRes, releasesRes] = await Promise.all([
-          supabase.from("profiles").select("*"),
-          supabase.from("music_releases").select("*"),
+          supabase.from("public_artist_profiles").select("id", { count: "exact", head: true }),
+          supabase.from("public_music_releases").select("id", { count: "exact", head: true }),
         ]);
 
-        const artistCount = Array.isArray(profilesRes.data) ? profilesRes.data.length : 0;
-        const releaseCount = Array.isArray(releasesRes.data)
-          ? releasesRes.data.filter((r: any) => r.status === "published").length
-          : 0;
+        const artistCount = profilesRes.count ?? 0;
+        const releaseCount = releasesRes.count ?? 0;
 
         setData({
           artists: artistCount,

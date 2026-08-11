@@ -25,6 +25,8 @@ import { CookieConsent } from "@/components/CookieConsent";
 // Lazy load heavy pages
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const MusicDashboard = lazy(() => import("./pages/MusicDashboard"));
+const PublishingDashboard = lazy(() => import("./pages/PublishingDashboard"));
+const AdminPublishingReview = lazy(() => import("./pages/AdminPublishingReview"));
 const AdminMusicReview = lazy(() => import("./pages/AdminMusicReview"));
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 const AdminAgreements = lazy(() => import("./pages/AdminAgreements"));
@@ -97,6 +99,20 @@ const App = () => (
               <ProtectedRoute>
                 <Suspense fallback={<PageLoader />}>
                   <MusicDashboard />
+                </Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/publishing" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <PublishingDashboard />
+                </Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/publishing-review" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <AdminPublishingReview />
                 </Suspense>
               </ProtectedRoute>
             } />

@@ -389,52 +389,91 @@ export type Database = {
       }
       digital_publications: {
         Row: {
+          admin_notes: string | null
           author_name: string
           content_url: string | null
           cover_image_url: string | null
           created_at: string | null
           description: string | null
           distribution_channels: Json | null
+          file_format: string | null
+          file_size_bytes: number | null
+          file_url: string | null
           id: string
           isbn: string | null
+          language: string | null
           metadata: Json | null
+          page_count: number | null
+          price_amount: number | null
+          price_currency: string | null
+          pub_status: string
           publication_type: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           sales_data: Json | null
           status: Database["public"]["Enums"]["project_status"] | null
+          submitted_at: string | null
+          target_channels: Json | null
           title: string
           updated_at: string | null
           user_id: string
         }
         Insert: {
+          admin_notes?: string | null
           author_name: string
           content_url?: string | null
           cover_image_url?: string | null
           created_at?: string | null
           description?: string | null
           distribution_channels?: Json | null
+          file_format?: string | null
+          file_size_bytes?: number | null
+          file_url?: string | null
           id?: string
           isbn?: string | null
+          language?: string | null
           metadata?: Json | null
+          page_count?: number | null
+          price_amount?: number | null
+          price_currency?: string | null
+          pub_status?: string
           publication_type?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           sales_data?: Json | null
           status?: Database["public"]["Enums"]["project_status"] | null
+          submitted_at?: string | null
+          target_channels?: Json | null
           title: string
           updated_at?: string | null
           user_id: string
         }
         Update: {
+          admin_notes?: string | null
           author_name?: string
           content_url?: string | null
           cover_image_url?: string | null
           created_at?: string | null
           description?: string | null
           distribution_channels?: Json | null
+          file_format?: string | null
+          file_size_bytes?: number | null
+          file_url?: string | null
           id?: string
           isbn?: string | null
+          language?: string | null
           metadata?: Json | null
+          page_count?: number | null
+          price_amount?: number | null
+          price_currency?: string | null
+          pub_status?: string
           publication_type?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           sales_data?: Json | null
           status?: Database["public"]["Enums"]["project_status"] | null
+          submitted_at?: string | null
+          target_channels?: Json | null
           title?: string
           updated_at?: string | null
           user_id?: string
@@ -1113,6 +1152,100 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "public_artist_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      publication_splits: {
+        Row: {
+          accepted: boolean
+          accepted_at: string | null
+          collaborator_email: string | null
+          collaborator_name: string
+          collaborator_user_id: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          paid_amount: number
+          percentage: number
+          publication_id: string
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          accepted?: boolean
+          accepted_at?: string | null
+          collaborator_email?: string | null
+          collaborator_name: string
+          collaborator_user_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          paid_amount?: number
+          percentage: number
+          publication_id: string
+          role?: string
+          updated_at?: string
+        }
+        Update: {
+          accepted?: boolean
+          accepted_at?: string | null
+          collaborator_email?: string | null
+          collaborator_name?: string
+          collaborator_user_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          paid_amount?: number
+          percentage?: number
+          publication_id?: string
+          role?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "publication_splits_publication_id_fkey"
+            columns: ["publication_id"]
+            isOneToOne: false
+            referencedRelation: "digital_publications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      publication_status_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_status: string
+          note: string | null
+          previous_status: string | null
+          publication_id: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status: string
+          note?: string | null
+          previous_status?: string | null
+          publication_id: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status?: string
+          note?: string | null
+          previous_status?: string | null
+          publication_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "publication_status_history_publication_id_fkey"
+            columns: ["publication_id"]
+            isOneToOne: false
+            referencedRelation: "digital_publications"
             referencedColumns: ["id"]
           },
         ]

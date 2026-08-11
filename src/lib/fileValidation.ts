@@ -25,6 +25,21 @@ export const MUSIC_COVER_ALLOWED_TYPES = [
   'image/jpg'
 ] as const;
 
+// Allowed MIME types for digital publications (ebooks / audiobooks)
+export const PUBLICATION_FILE_ALLOWED_TYPES = [
+  'application/epub+zip',
+  'application/pdf',
+  'application/x-mobipocket-ebook',
+  'audio/mpeg',
+  'audio/mp3'
+] as const;
+
+export const PUBLICATION_COVER_ALLOWED_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/jpg'
+] as const;
+
 // File extension to MIME type mapping for validation
 const EXTENSION_MIME_MAP: Record<string, string[]> = {
   'jpg': ['image/jpeg'],
@@ -36,7 +51,9 @@ const EXTENSION_MIME_MAP: Record<string, string[]> = {
   'pdf': ['application/pdf'],
   'mp3': ['audio/mpeg', 'audio/mp3'],
   'wav': ['audio/wav', 'audio/x-wav'],
-  'flac': ['audio/flac']
+  'flac': ['audio/flac'],
+  'epub': ['application/epub+zip'],
+  'mobi': ['application/x-mobipocket-ebook']
 };
 
 // Magic bytes for common file types (first bytes of file)
@@ -49,15 +66,19 @@ const MAGIC_BYTES: Record<string, number[][]> = {
   'application/pdf': [[0x25, 0x50, 0x44, 0x46]], // %PDF
   'audio/mpeg': [[0xFF, 0xFB], [0xFF, 0xFA], [0x49, 0x44, 0x33]], // MP3 headers and ID3
   'audio/wav': [[0x52, 0x49, 0x46, 0x46]], // RIFF header
-  'audio/flac': [[0x66, 0x4C, 0x61, 0x43]] // fLaC
+  'audio/flac': [[0x66, 0x4C, 0x61, 0x43]], // fLaC
+  'application/epub+zip': [[0x50, 0x4B, 0x03, 0x04], [0x50, 0x4B, 0x05, 0x06]] // ZIP container
 };
 
 // Max file sizes in bytes
 export const MAX_FILE_SIZES = {
   brandAsset: 50 * 1024 * 1024, // 50MB
   musicAudio: 100 * 1024 * 1024, // 100MB
-  musicCover: 10 * 1024 * 1024 // 10MB
+  musicCover: 10 * 1024 * 1024, // 10MB
+  publicationFile: 150 * 1024 * 1024, // 150MB
+  publicationCover: 10 * 1024 * 1024 // 10MB
 };
+
 
 // Sanitize filename - remove potentially dangerous characters
 export function sanitizeFilename(filename: string): string {

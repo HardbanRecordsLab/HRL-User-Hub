@@ -1123,6 +1123,7 @@ export type Database = {
           accepted_at: string | null
           collaborator_email: string | null
           collaborator_name: string
+          collaborator_user_id: string | null
           created_at: string
           id: string
           notes: string | null
@@ -1137,6 +1138,7 @@ export type Database = {
           accepted_at?: string | null
           collaborator_email?: string | null
           collaborator_name: string
+          collaborator_user_id?: string | null
           created_at?: string
           id?: string
           notes?: string | null
@@ -1151,6 +1153,7 @@ export type Database = {
           accepted_at?: string | null
           collaborator_email?: string | null
           collaborator_name?: string
+          collaborator_user_id?: string | null
           created_at?: string
           id?: string
           notes?: string | null

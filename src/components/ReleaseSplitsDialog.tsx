@@ -13,6 +13,7 @@ interface Split {
   release_id: string;
   collaborator_name: string;
   collaborator_email: string | null;
+  collaborator_user_id: string | null;
   role: string;
   percentage: number;
   accepted: boolean;
@@ -157,6 +158,11 @@ export function ReleaseSplitsDialog({ release, open, onClose }: Props) {
                         <Badge className="text-[10px] bg-emerald-500/20 text-emerald-300 border-emerald-500/30">Zaakceptowane</Badge>
                       ) : (
                         <Badge variant="outline" className="text-[10px]">Oczekuje</Badge>
+                      )}
+                      {s.collaborator_user_id ? (
+                        <Badge className="text-[10px] bg-primary/20 text-primary border-primary/30">Konto zweryfikowane</Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-[10px] text-amber-300 border-amber-400/30">Brak konta — split niewidoczny dla współtwórcy</Badge>
                       )}
                     </div>
                     {s.collaborator_email && (

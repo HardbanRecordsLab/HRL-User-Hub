@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.audit_ddl_security_changes() FROM PUBLIC, anon, authenticated;

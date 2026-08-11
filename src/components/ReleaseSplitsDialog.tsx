@@ -13,6 +13,7 @@ interface Split {
   release_id: string;
   collaborator_name: string;
   collaborator_email: string | null;
+  collaborator_user_id: string | null;
   role: string;
   percentage: number;
   accepted: boolean;

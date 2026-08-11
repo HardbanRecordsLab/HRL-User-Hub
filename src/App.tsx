@@ -102,6 +102,20 @@ const App = () => (
                 </Suspense>
               </ProtectedRoute>
             } />
+            <Route path="/dashboard/publishing" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <PublishingDashboard />
+                </Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/publishing-review" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <AdminPublishingReview />
+                </Suspense>
+              </ProtectedRoute>
+            } />
             <Route path="/dashboard/marketing" element={
               <ProtectedRoute>
                 <Suspense fallback={<PageLoader />}>

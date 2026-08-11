@@ -159,6 +159,11 @@ export function ReleaseSplitsDialog({ release, open, onClose }: Props) {
                       ) : (
                         <Badge variant="outline" className="text-[10px]">Oczekuje</Badge>
                       )}
+                      {s.collaborator_user_id ? (
+                        <Badge className="text-[10px] bg-primary/20 text-primary border-primary/30">Konto zweryfikowane</Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-[10px] text-amber-300 border-amber-400/30">Brak konta — split niewidoczny dla współtwórcy</Badge>
+                      )}
                     </div>
                     {s.collaborator_email && (
                       <p className="text-xs text-muted-foreground truncate">{s.collaborator_email}</p>

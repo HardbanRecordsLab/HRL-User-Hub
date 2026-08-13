@@ -54,6 +54,15 @@ export default function AdminPublishingReview() {
       toast({ title: "Błąd", description: error.message, variant: "destructive" });
       return;
     }
+    await supabase.from("notifications").insert({
+      user_id: pub.user_id,
+      title: `Publikacja: ${PUBLICATION_STATUS_LABELS[status] ?? status}`,
+      message: `Status „${pub.title}" zmieniono na: ${PUBLICATION_STATUS_LABELS[status] ?? status}.${
+        notes[pub.id] ? ` Uwagi: ${notes[pub.id]}` : ""
+      }`,
+      type: status === "rejected" ? "warning" : "success",
+      category: "publishing",
+    });
     toast({ title: "Status zaktualizowany", description: PUBLICATION_STATUS_LABELS[status] ?? status });
     load();
   };

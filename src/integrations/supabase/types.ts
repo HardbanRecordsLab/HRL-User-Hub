@@ -884,6 +884,107 @@ export type Database = {
         }
         Relationships: []
       }
+      payout_status_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_status: string
+          note: string | null
+          payout_id: string
+          previous_status: string | null
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status: string
+          note?: string | null
+          payout_id: string
+          previous_status?: string | null
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status?: string
+          note?: string | null
+          payout_id?: string
+          previous_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_status_history_payout_id_fkey"
+            columns: ["payout_id"]
+            isOneToOne: false
+            referencedRelation: "payouts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payouts: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          approved_at: string | null
+          created_at: string
+          currency: string
+          iban: string | null
+          iban_holder: string | null
+          id: string
+          notes: string | null
+          paid_at: string | null
+          period_end: string | null
+          period_start: string | null
+          processed_by: string | null
+          reference: string | null
+          requested_at: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount: number
+          approved_at?: string | null
+          created_at?: string
+          currency?: string
+          iban?: string | null
+          iban_holder?: string | null
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          period_end?: string | null
+          period_start?: string | null
+          processed_by?: string | null
+          reference?: string | null
+          requested_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          approved_at?: string | null
+          created_at?: string
+          currency?: string
+          iban?: string | null
+          iban_holder?: string | null
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          period_end?: string | null
+          period_start?: string | null
+          processed_by?: string | null
+          reference?: string | null
+          requested_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       podcast_episodes: {
         Row: {
           audio_url: string | null

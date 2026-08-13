@@ -51,6 +51,7 @@ export const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
     { title: "Kalendarz Publikacji", icon: Calendar, link: "/dashboard/calendar" },
     { title: "Dashboard Analityczny", icon: BarChart3, link: "/dashboard/analytics" },
     { title: "Śledzenie Przychodów", icon: BadgeDollarSign, link: "/dashboard/revenue" },
+    { title: "Moje Wypłaty", icon: Coins, link: "/dashboard/payouts" },
     { title: "Assety Brandowe", icon: Palette, link: "/dashboard/brand-assets" },
     { title: "Prometheus AI", icon: Sparkles, link: "/prometheus-ai" },
     { title: "Raport Aplikacji", icon: ScrollText, link: "/comprehensive-report" },

@@ -30,6 +30,8 @@ const AdminPublishingReview = lazy(() => import("./pages/AdminPublishingReview")
 const AdminMusicReview = lazy(() => import("./pages/AdminMusicReview"));
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 const AdminAgreements = lazy(() => import("./pages/AdminAgreements"));
+const AdminPayouts = lazy(() => import("./pages/AdminPayouts"));
+const Payouts = lazy(() => import("./pages/Payouts"));
 const AIStudio = lazy(() => import("./pages/AIStudio"));
 const StrategyGenerator = lazy(() => import("./pages/StrategyGenerator"));
 const ContentGenerator = lazy(() => import("./pages/ContentGenerator"));
@@ -155,6 +157,20 @@ const App = () => (
               <ProtectedRoute>
                 <Suspense fallback={<PageLoader />}>
                   <AdminMusicReview />
+                </Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/payouts" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <Payouts />
+                </Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/payouts" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <AdminPayouts />
                 </Suspense>
               </ProtectedRoute>
             } />

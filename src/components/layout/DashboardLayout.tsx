@@ -41,6 +41,7 @@ export const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
   const modules = [
     { title: "Panel Główny", icon: LayoutDashboard, link: "/dashboard" },
     { title: "Dystrybucja Muzyki", icon: Music, link: "/dashboard/music" },
+    { title: "Publikacje Cyfrowe", icon: BookOpen, link: "/dashboard/publishing" },
     { title: "Marketing AI", icon: Megaphone, link: "/dashboard/marketing" },
     { title: "AI Studio", icon: Brain, link: "/dashboard/ai-studio" },
     { title: "Generator Strategii", icon: Lightbulb, link: "/dashboard/strategy-generator" },

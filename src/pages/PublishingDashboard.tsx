@@ -190,6 +190,15 @@ export default function PublishingDashboard() {
       toast({ title: "Błąd", description: error.message, variant: "destructive" });
       return;
     }
+    if (user) {
+      await supabase.from("notifications").insert({
+        user_id: user.id,
+        title: "Publikacja wysłana do weryfikacji",
+        message: `„${pub.title}" trafiła do zespołu HRL. Otrzymasz powiadomienie po akceptacji.`,
+        type: "info",
+        category: "publishing",
+      });
+    }
     toast({ title: "Wysłano do weryfikacji", description: "Zespół HRL sprawdzi publikację i wyśle ją do wybranych kanałów." });
     loadPublications();
   };

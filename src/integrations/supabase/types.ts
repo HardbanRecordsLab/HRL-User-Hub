@@ -495,6 +495,76 @@ export type Database = {
           },
         ]
       }
+      distribution_events: {
+        Row: {
+          created_at: string
+          external_id: string | null
+          id: string
+          payload: Json | null
+          platform: string
+          publication_id: string | null
+          release_id: string | null
+          reported_at: string
+          source: string
+          status: string
+          updated_at: string
+          url: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          external_id?: string | null
+          id?: string
+          payload?: Json | null
+          platform: string
+          publication_id?: string | null
+          release_id?: string | null
+          reported_at?: string
+          source?: string
+          status: string
+          updated_at?: string
+          url?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          external_id?: string | null
+          id?: string
+          payload?: Json | null
+          platform?: string
+          publication_id?: string | null
+          release_id?: string | null
+          reported_at?: string
+          source?: string
+          status?: string
+          updated_at?: string
+          url?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "distribution_events_publication_id_fkey"
+            columns: ["publication_id"]
+            isOneToOne: false
+            referencedRelation: "digital_publications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "distribution_events_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "music_releases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "distribution_events_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "public_music_releases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       distribution_releases: {
         Row: {
           artist_name: string
@@ -883,6 +953,63 @@ export type Database = {
           version?: string
         }
         Relationships: []
+      }
+      payout_items: {
+        Row: {
+          created_at: string
+          currency: string
+          gross_amount: number
+          id: string
+          net_amount: number
+          note: string | null
+          payout_id: string
+          platform_fee_amount: number
+          revenue_transaction_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          gross_amount?: number
+          id?: string
+          net_amount?: number
+          note?: string | null
+          payout_id: string
+          platform_fee_amount?: number
+          revenue_transaction_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          gross_amount?: number
+          id?: string
+          net_amount?: number
+          note?: string | null
+          payout_id?: string
+          platform_fee_amount?: number
+          revenue_transaction_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_items_payout_id_fkey"
+            columns: ["payout_id"]
+            isOneToOne: false
+            referencedRelation: "payouts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payout_items_revenue_transaction_id_fkey"
+            columns: ["revenue_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "revenue_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       payout_status_history: {
         Row: {
@@ -1472,6 +1599,7 @@ export type Database = {
           platform_fee_amount: number | null
           platform_fee_pct: number
           release_id: string | null
+          settled_payout_id: string | null
           source: string
           source_id: string | null
           transaction_date: string
@@ -1490,6 +1618,7 @@ export type Database = {
           platform_fee_amount?: number | null
           platform_fee_pct?: number
           release_id?: string | null
+          settled_payout_id?: string | null
           source: string
           source_id?: string | null
           transaction_date: string
@@ -1508,6 +1637,7 @@ export type Database = {
           platform_fee_amount?: number | null
           platform_fee_pct?: number
           release_id?: string | null
+          settled_payout_id?: string | null
           source?: string
           source_id?: string | null
           transaction_date?: string
@@ -1527,6 +1657,13 @@ export type Database = {
             columns: ["release_id"]
             isOneToOne: false
             referencedRelation: "public_music_releases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "revenue_transactions_settled_payout_id_fkey"
+            columns: ["settled_payout_id"]
+            isOneToOne: false
+            referencedRelation: "payouts"
             referencedColumns: ["id"]
           },
         ]

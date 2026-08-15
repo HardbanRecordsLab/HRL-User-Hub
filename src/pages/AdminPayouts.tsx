@@ -171,6 +171,35 @@ export default function AdminPayouts() {
     setHistory((data || []) as HistoryRow[]);
   };
 
+  const loadUnsettled = async (userId: string) => {
+    if (!userId) return;
+    setLoadingTx(true);
+    const { data, error } = await supabase
+      .from("revenue_transactions")
+      .select("id, source, description, transaction_date, gross_amount, amount, platform_fee_amount, net_to_artist, currency")
+      .eq("user_id", userId)
+      .is("settled_payout_id", null)
+      .order("transaction_date", { ascending: false });
+    setLoadingTx(false);
+    if (error) {
+      toast({ title: "Błąd ładowania transakcji", description: error.message, variant: "destructive" });
+      return;
+    }
+    setUnsettledTx((data || []) as UnsettledTx[]);
+    setSelectedTx([]);
+  };
+
+  const toggleTx = (id: string) => {
+    setSelectedTx((prev) => {
+      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
+      const total = unsettledTx
+        .filter((t) => next.includes(t.id))
+        .reduce((a, t) => a + Number(t.net_to_artist ?? t.amount ?? 0), 0);
+      setForm((f) => ({ ...f, amount: next.length ? total.toFixed(2) : f.amount }));
+      return next;
+    });
+  };
+
   const createPayout = async () => {
     if (!form.user_id || !form.amount) {
       toast({ title: "Uzupełnij ID artysty i kwotę", variant: "destructive" });
@@ -183,10 +212,12 @@ export default function AdminPayouts() {
       .eq("id", form.user_id)
       .maybeSingle();
 
-    const { error } = await supabase.from("payouts").insert({
+    const currency = form.currency || (prof as any)?.payout_currency || "PLN";
+
+    const { data: created, error } = await supabase.from("payouts").insert({
       user_id: form.user_id,
       amount: Number(form.amount),
-      currency: form.currency || (prof as any)?.payout_currency || "PLN",
+      currency,
       period_start: form.period_start || null,
       period_end: form.period_end || null,
       reference: form.reference || null,
@@ -194,16 +225,41 @@ export default function AdminPayouts() {
       iban: (prof as any)?.iban ?? null,
       iban_holder: (prof as any)?.iban_holder ?? (prof as any)?.legal_name ?? (prof as any)?.full_name ?? null,
       status: "pending",
-    });
-    setSaving(false);
-    if (error) {
-      toast({ title: "Błąd tworzenia wypłaty", description: error.message, variant: "destructive" });
+    }).select("id").single();
+
+    if (error || !created) {
+      setSaving(false);
+      toast({ title: "Błąd tworzenia wypłaty", description: error?.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Wypłata utworzona" });
+
+    if (selectedTx.length) {
+      const items = unsettledTx
+        .filter((t) => selectedTx.includes(t.id))
+        .map((t) => ({
+          payout_id: created.id,
+          revenue_transaction_id: t.id,
+          user_id: form.user_id,
+          gross_amount: Number(t.gross_amount ?? t.amount ?? 0),
+          platform_fee_amount: Number(t.platform_fee_amount ?? 0),
+          net_amount: Number(t.net_to_artist ?? t.amount ?? 0),
+          currency: t.currency || currency,
+          note: t.description,
+        }));
+      const { error: itemsErr } = await supabase.from("payout_items").insert(items);
+      if (itemsErr) {
+        toast({ title: "Wypłata utworzona, ale nie powiązano transakcji", description: itemsErr.message, variant: "destructive" });
+      }
+    }
+
+    setSaving(false);
+    toast({ title: "Wypłata utworzona", description: selectedTx.length ? `Powiązano ${selectedTx.length} transakcji.` : undefined });
     setCreateOpen(false);
     setForm({ user_id: "", amount: "", currency: "PLN", period_start: "", period_end: "", reference: "", notes: "" });
+    setUnsettledTx([]);
+    setSelectedTx([]);
     await load();
+
   };
 
   const exportCsv = () => {

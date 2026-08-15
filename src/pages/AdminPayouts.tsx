@@ -42,6 +42,18 @@ type Payout = {
   profile?: { full_name: string | null; legal_name: string | null; username: string | null } | null;
 };
 
+type UnsettledTx = {
+  id: string;
+  source: string;
+  description: string | null;
+  transaction_date: string;
+  gross_amount: number | null;
+  amount: number;
+  platform_fee_amount: number | null;
+  net_to_artist: number | null;
+  currency: string | null;
+};
+
 type HistoryRow = {
   id: string;
   previous_status: string | null;
@@ -73,6 +85,9 @@ export default function AdminPayouts() {
   const [detail, setDetail] = useState<Payout | null>(null);
   const [history, setHistory] = useState<HistoryRow[]>([]);
   const [createOpen, setCreateOpen] = useState(false);
+  const [unsettledTx, setUnsettledTx] = useState<UnsettledTx[]>([]);
+  const [selectedTx, setSelectedTx] = useState<string[]>([]);
+  const [loadingTx, setLoadingTx] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const [form, setForm] = useState({

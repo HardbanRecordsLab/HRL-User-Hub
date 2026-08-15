@@ -493,8 +493,27 @@ export default function AdminPayouts() {
           <div className="space-y-3">
             <div className="space-y-1">
               <Label>ID artysty (user_id)</Label>
-              <Input value={form.user_id} onChange={(e) => setForm({ ...form, user_id: e.target.value })} placeholder="uuid" />
+              <div className="flex gap-2">
+                <Input value={form.user_id} onChange={(e) => setForm({ ...form, user_id: e.target.value })} placeholder="uuid" />
+                <Button type="button" variant="outline" onClick={() => loadUnsettled(form.user_id)} disabled={!form.user_id || loadingTx}>
+                  {loadingTx ? <Loader2 className="h-4 w-4 animate-spin" /> : "Wczytaj przychody"}
+                </Button>
+              </div>
             </div>
+            {unsettledTx.length > 0 && (
+              <div className="space-y-1">
+                <Label>Nierozliczone transakcje ({selectedTx.length}/{unsettledTx.length})</Label>
+                <div className="max-h-48 overflow-y-auto space-y-1 rounded-lg border border-border p-2">
+                  {unsettledTx.map((t) => (
+                    <label key={t.id} className="flex items-center gap-2 text-sm cursor-pointer rounded p-1 hover:bg-muted/50">
+                      <Checkbox checked={selectedTx.includes(t.id)} onCheckedChange={() => toggleTx(t.id)} />
+                      <span className="flex-1 truncate">{t.transaction_date} · {t.description || t.source}</span>
+                      <span className="whitespace-nowrap">{Number(t.net_to_artist ?? t.amount).toFixed(2)} {t.currency || "PLN"}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
                 <Label>Kwota</Label>

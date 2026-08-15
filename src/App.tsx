@@ -32,6 +32,9 @@ const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 const AdminAgreements = lazy(() => import("./pages/AdminAgreements"));
 const AdminPayouts = lazy(() => import("./pages/AdminPayouts"));
 const Payouts = lazy(() => import("./pages/Payouts"));
+const Settlement = lazy(() => import("./pages/Settlement"));
+const DistributionTracking = lazy(() => import("./pages/DistributionTracking"));
+const AdminDistribution = lazy(() => import("./pages/AdminDistribution"));
 const AIStudio = lazy(() => import("./pages/AIStudio"));
 const StrategyGenerator = lazy(() => import("./pages/StrategyGenerator"));
 const ContentGenerator = lazy(() => import("./pages/ContentGenerator"));
@@ -167,6 +170,28 @@ const App = () => (
                 </Suspense>
               </ProtectedRoute>
             } />
+            <Route path="/dashboard/settlement" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <Settlement />
+                </Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/distribution" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <DistributionTracking />
+                </Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/distribution" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <AdminDistribution />
+                </Suspense>
+              </ProtectedRoute>
+            } />
+
             <Route path="/admin/payouts" element={
               <ProtectedRoute>
                 <Suspense fallback={<PageLoader />}>

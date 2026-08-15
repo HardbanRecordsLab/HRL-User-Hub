@@ -20,7 +20,9 @@ import {
   LogOut,
   LayoutDashboard,
   Coins,
-  Crown
+  Crown,
+  Receipt,
+  Radio
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -52,6 +54,8 @@ export const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
     { title: "Dashboard Analityczny", icon: BarChart3, link: "/dashboard/analytics" },
     { title: "Śledzenie Przychodów", icon: BadgeDollarSign, link: "/dashboard/revenue" },
     { title: "Moje Wypłaty", icon: Coins, link: "/dashboard/payouts" },
+    { title: "Rozliczenie Salda", icon: Receipt, link: "/dashboard/settlement" },
+    { title: "Śledzenie Dystrybucji", icon: Radio, link: "/dashboard/distribution" },
     { title: "Assety Brandowe", icon: Palette, link: "/dashboard/brand-assets" },
     { title: "Prometheus AI", icon: Sparkles, link: "/prometheus-ai" },
     { title: "Raport Aplikacji", icon: ScrollText, link: "/comprehensive-report" },

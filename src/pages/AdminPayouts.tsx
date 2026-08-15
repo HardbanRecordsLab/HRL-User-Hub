@@ -42,6 +42,18 @@ type Payout = {
   profile?: { full_name: string | null; legal_name: string | null; username: string | null } | null;
 };
 
+type UnsettledTx = {
+  id: string;
+  source: string;
+  description: string | null;
+  transaction_date: string;
+  gross_amount: number | null;
+  amount: number;
+  platform_fee_amount: number | null;
+  net_to_artist: number | null;
+  currency: string | null;
+};
+
 type HistoryRow = {
   id: string;
   previous_status: string | null;
@@ -73,6 +85,9 @@ export default function AdminPayouts() {
   const [detail, setDetail] = useState<Payout | null>(null);
   const [history, setHistory] = useState<HistoryRow[]>([]);
   const [createOpen, setCreateOpen] = useState(false);
+  const [unsettledTx, setUnsettledTx] = useState<UnsettledTx[]>([]);
+  const [selectedTx, setSelectedTx] = useState<string[]>([]);
+  const [loadingTx, setLoadingTx] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const [form, setForm] = useState({
@@ -171,6 +186,35 @@ export default function AdminPayouts() {
     setHistory((data || []) as HistoryRow[]);
   };
 
+  const loadUnsettled = async (userId: string) => {
+    if (!userId) return;
+    setLoadingTx(true);
+    const { data, error } = await supabase
+      .from("revenue_transactions")
+      .select("id, source, description, transaction_date, gross_amount, amount, platform_fee_amount, net_to_artist, currency")
+      .eq("user_id", userId)
+      .is("settled_payout_id", null)
+      .order("transaction_date", { ascending: false });
+    setLoadingTx(false);
+    if (error) {
+      toast({ title: "Błąd ładowania transakcji", description: error.message, variant: "destructive" });
+      return;
+    }
+    setUnsettledTx((data || []) as UnsettledTx[]);
+    setSelectedTx([]);
+  };
+
+  const toggleTx = (id: string) => {
+    setSelectedTx((prev) => {
+      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
+      const total = unsettledTx
+        .filter((t) => next.includes(t.id))
+        .reduce((a, t) => a + Number(t.net_to_artist ?? t.amount ?? 0), 0);
+      setForm((f) => ({ ...f, amount: next.length ? total.toFixed(2) : f.amount }));
+      return next;
+    });
+  };
+
   const createPayout = async () => {
     if (!form.user_id || !form.amount) {
       toast({ title: "Uzupełnij ID artysty i kwotę", variant: "destructive" });
@@ -183,10 +227,12 @@ export default function AdminPayouts() {
       .eq("id", form.user_id)
       .maybeSingle();
 
-    const { error } = await supabase.from("payouts").insert({
+    const currency = form.currency || (prof as any)?.payout_currency || "PLN";
+
+    const { data: created, error } = await supabase.from("payouts").insert({
       user_id: form.user_id,
       amount: Number(form.amount),
-      currency: form.currency || (prof as any)?.payout_currency || "PLN",
+      currency,
       period_start: form.period_start || null,
       period_end: form.period_end || null,
       reference: form.reference || null,
@@ -194,16 +240,41 @@ export default function AdminPayouts() {
       iban: (prof as any)?.iban ?? null,
       iban_holder: (prof as any)?.iban_holder ?? (prof as any)?.legal_name ?? (prof as any)?.full_name ?? null,
       status: "pending",
-    });
-    setSaving(false);
-    if (error) {
-      toast({ title: "Błąd tworzenia wypłaty", description: error.message, variant: "destructive" });
+    }).select("id").single();
+
+    if (error || !created) {
+      setSaving(false);
+      toast({ title: "Błąd tworzenia wypłaty", description: error?.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Wypłata utworzona" });
+
+    if (selectedTx.length) {
+      const items = unsettledTx
+        .filter((t) => selectedTx.includes(t.id))
+        .map((t) => ({
+          payout_id: created.id,
+          revenue_transaction_id: t.id,
+          user_id: form.user_id,
+          gross_amount: Number(t.gross_amount ?? t.amount ?? 0),
+          platform_fee_amount: Number(t.platform_fee_amount ?? 0),
+          net_amount: Number(t.net_to_artist ?? t.amount ?? 0),
+          currency: t.currency || currency,
+          note: t.description,
+        }));
+      const { error: itemsErr } = await supabase.from("payout_items").insert(items);
+      if (itemsErr) {
+        toast({ title: "Wypłata utworzona, ale nie powiązano transakcji", description: itemsErr.message, variant: "destructive" });
+      }
+    }
+
+    setSaving(false);
+    toast({ title: "Wypłata utworzona", description: selectedTx.length ? `Powiązano ${selectedTx.length} transakcji.` : undefined });
     setCreateOpen(false);
     setForm({ user_id: "", amount: "", currency: "PLN", period_start: "", period_end: "", reference: "", notes: "" });
+    setUnsettledTx([]);
+    setSelectedTx([]);
     await load();
+
   };
 
   const exportCsv = () => {
@@ -422,8 +493,27 @@ export default function AdminPayouts() {
           <div className="space-y-3">
             <div className="space-y-1">
               <Label>ID artysty (user_id)</Label>
-              <Input value={form.user_id} onChange={(e) => setForm({ ...form, user_id: e.target.value })} placeholder="uuid" />
+              <div className="flex gap-2">
+                <Input value={form.user_id} onChange={(e) => setForm({ ...form, user_id: e.target.value })} placeholder="uuid" />
+                <Button type="button" variant="outline" onClick={() => loadUnsettled(form.user_id)} disabled={!form.user_id || loadingTx}>
+                  {loadingTx ? <Loader2 className="h-4 w-4 animate-spin" /> : "Wczytaj przychody"}
+                </Button>
+              </div>
             </div>
+            {unsettledTx.length > 0 && (
+              <div className="space-y-1">
+                <Label>Nierozliczone transakcje ({selectedTx.length}/{unsettledTx.length})</Label>
+                <div className="max-h-48 overflow-y-auto space-y-1 rounded-lg border border-border p-2">
+                  {unsettledTx.map((t) => (
+                    <label key={t.id} className="flex items-center gap-2 text-sm cursor-pointer rounded p-1 hover:bg-muted/50">
+                      <Checkbox checked={selectedTx.includes(t.id)} onCheckedChange={() => toggleTx(t.id)} />
+                      <span className="flex-1 truncate">{t.transaction_date} · {t.description || t.source}</span>
+                      <span className="whitespace-nowrap">{Number(t.net_to_artist ?? t.amount).toFixed(2)} {t.currency || "PLN"}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
                 <Label>Kwota</Label>

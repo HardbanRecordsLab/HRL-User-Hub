@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.sync_revenue_settlement() FROM PUBLIC, anon, authenticated;

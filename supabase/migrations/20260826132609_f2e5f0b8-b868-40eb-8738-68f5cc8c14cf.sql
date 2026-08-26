@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.log_payout_item_adjustment() FROM PUBLIC, anon, authenticated;

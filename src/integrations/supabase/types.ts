@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+    PostgrestVersion: "14.17"
   }
   public: {
     Tables: {
@@ -953,6 +953,144 @@ export type Database = {
           version?: string
         }
         Relationships: []
+      }
+      payout_dispute_comments: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          dispute_id: string
+          id: string
+          is_internal: boolean
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          dispute_id: string
+          id?: string
+          is_internal?: boolean
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          dispute_id?: string
+          id?: string
+          is_internal?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_dispute_comments_dispute_id_fkey"
+            columns: ["dispute_id"]
+            isOneToOne: false
+            referencedRelation: "payout_disputes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payout_disputes: {
+        Row: {
+          created_at: string
+          disputed_amount: number | null
+          id: string
+          payout_item_id: string
+          reason: string
+          resolution: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          disputed_amount?: number | null
+          id?: string
+          payout_item_id: string
+          reason: string
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          disputed_amount?: number | null
+          id?: string
+          payout_item_id?: string
+          reason?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_disputes_payout_item_id_fkey"
+            columns: ["payout_item_id"]
+            isOneToOne: false
+            referencedRelation: "payout_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payout_item_adjustments: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_fee: number | null
+          new_gross: number | null
+          new_net: number | null
+          payout_item_id: string
+          previous_fee: number | null
+          previous_gross: number | null
+          previous_net: number | null
+          reason: string | null
+          user_id: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_fee?: number | null
+          new_gross?: number | null
+          new_net?: number | null
+          payout_item_id: string
+          previous_fee?: number | null
+          previous_gross?: number | null
+          previous_net?: number | null
+          reason?: string | null
+          user_id: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_fee?: number | null
+          new_gross?: number | null
+          new_net?: number | null
+          payout_item_id?: string
+          previous_fee?: number | null
+          previous_gross?: number | null
+          previous_net?: number | null
+          reason?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_item_adjustments_payout_item_id_fkey"
+            columns: ["payout_item_id"]
+            isOneToOne: false
+            referencedRelation: "payout_items"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       payout_items: {
         Row: {

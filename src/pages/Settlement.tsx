@@ -6,10 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Loader2, Wallet, Receipt, Download, Percent } from "lucide-react";
+import { Loader2, Wallet, Receipt, Download, Percent, Scale } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
 import { PAYOUT_STATUSES } from "./AdminPayouts";
 import { downloadFile } from "@/lib/sepa";
+import { PayoutDisputeDialog, DISPUTE_STATUSES, type Dispute, type DisputeItem } from "@/components/PayoutDisputeDialog";
 
 type Tx = {
   id: string;

@@ -200,6 +200,13 @@ const App = () => (
                 </Suspense>
               </ProtectedRoute>
             } />
+            <Route path="/admin/disputes" element={
+              <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                  <AdminDisputes />
+                </Suspense>
+              </ProtectedRoute>
+            } />
             <Route path="/admin/agreements" element={
               <ProtectedRoute>
                 <Suspense fallback={<PageLoader />}>

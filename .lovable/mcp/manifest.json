@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "sdk_version": "1.0.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://ipmwxzxthrdqxqgjonru.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "hardbanrecordslab-userhub",
+      "version": "0.1.0",
+      "title": "hardbanrecordslab-userhub"
+    },
+    "tools": [
+      {
+        "name": "list_releases",
+        "title": "Lista wydań muzycznych",
+        "description": "Zwraca wydania muzyczne zalogowanego artysty (tytuł, artysta, status, data premiery).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "Opcjonalny filtr statusu, np. draft, submitted, live"
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "description": "Maksymalna liczba wyników"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_payouts",
+        "title": "Lista wypłat",
+        "description": "Zwraca historię wypłat prowizji zalogowanego twórcy wraz ze statusami i okresami rozliczeniowymi.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "approved",
+                "processing",
+                "paid",
+                "rejected"
+              ],
+              "description": "Opcjonalny filtr statusu"
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_settlement_summary",
+        "title": "Podsumowanie rozliczeń",
+        "description": "Zwraca podsumowanie finansowe zalogowanego twórcy: przychód brutto, prowizja HRL, zarobek netto, wypłacono, w realizacji i saldo nierozliczone.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_payout_disputes",
+        "title": "Lista sporów wypłat",
+        "description": "Zwraca spory zgłoszone przez zalogowanego twórcę do pozycji wypłat wraz ze statusem i rozstrzygnięciem.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "open",
+                "under_review",
+                "resolved",
+                "rejected"
+              ]
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_payout_dispute",
+        "title": "Zgłoś spór do pozycji wypłaty",
+        "description": "Tworzy spór do wskazanej pozycji wypłaty (payout_item) zalogowanego twórcy. Administrator otrzyma go do rozpatrzenia.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "payout_item_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "ID pozycji wypłaty"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 2000,
+              "description": "Opis problemu (min. 10 znaków)"
+            },
+            "disputed_amount": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Kwestionowana kwota (opcjonalnie)"
+            }
+          },
+          "required": [
+            "payout_item_id",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

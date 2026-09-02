@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,6 +28,12 @@ const fullNameSchema = z.string()
   .max(100, "Imię i nazwisko jest zbyt długie")
   .trim();
 
+function safeNext(raw: string | null): string {
+  if (!raw) return "/dashboard";
+  if (!raw.startsWith("/") || raw.startsWith("//") || raw.includes("://")) return "/dashboard";
+  return raw;
+}
+
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,6 +41,8 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const nextPath = safeNext(searchParams.get("next"));
   const { toast } = useToast();
 
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -62,7 +70,7 @@ export default function AuthPage() {
         throw new Error(nameValidation.error.errors[0].message);
       }
 
-      const redirectUrl = `${window.location.origin}/`;
+      const redirectUrl = `${window.location.origin}${nextPath}`;
       const { error } = await supabase.auth.signUp({
         email: emailValidation.data,
         password: passwordValidation.data,
@@ -88,7 +96,7 @@ export default function AuthPage() {
       });
 
       if (!signInError) {
-        navigate("/dashboard");
+        navigate(nextPath);
       }
     } catch (error: any) {
       toast({
@@ -113,7 +121,7 @@ export default function AuthPage() {
 
       if (error) throw error;
 
-      navigate("/dashboard");
+      navigate(nextPath);
     } catch (error: any) {
       toast({
         title: "Błąd",

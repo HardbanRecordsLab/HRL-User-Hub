@@ -268,6 +268,8 @@ export default function AdminPanel() {
                   {(stats?.pendingReview ?? 0) > 0 && <Badge variant="secondary">{stats?.pendingReview}</Badge>}
                 </Button>
                 <Button variant="outline" onClick={() => navigate("/dashboard/revenue")} className="gap-2"><DollarSign className="w-4 h-4" /> Przychody</Button>
+                <Button variant="outline" onClick={() => navigate("/admin/payouts")} className="gap-2"><DollarSign className="w-4 h-4" /> Wypłaty</Button>
+                <Button variant="outline" onClick={() => navigate("/admin/disputes")} className="gap-2"><ShieldCheck className="w-4 h-4" /> Spory wypłat</Button>
                 <Button variant="outline" onClick={() => navigate("/dashboard/analytics")} className="gap-2"><Activity className="w-4 h-4" /> Analityka</Button>
                 <Button variant="outline" onClick={() => navigate("/dashboard/marketing")} className="gap-2"><Megaphone className="w-4 h-4" /> Marketing</Button>
                 <Button variant="outline" onClick={loadAll} className="gap-2"><RefreshCw className="w-4 h-4" /> Odśwież</Button>

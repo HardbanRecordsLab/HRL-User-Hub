@@ -6,10 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Loader2, Wallet, Receipt, Download, Percent } from "lucide-react";
+import { Loader2, Wallet, Receipt, Download, Percent, Scale } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
 import { PAYOUT_STATUSES } from "./AdminPayouts";
 import { downloadFile } from "@/lib/sepa";
+import { PayoutDisputeDialog, DISPUTE_STATUSES, type Dispute, type DisputeItem } from "@/components/PayoutDisputeDialog";
 
 type Tx = {
   id: string;
@@ -58,32 +59,58 @@ export default function Settlement() {
   const [txs, setTxs] = useState<Tx[]>([]);
   const [payouts, setPayouts] = useState<Payout[]>([]);
   const [items, setItems] = useState<Item[]>([]);
+  const [disputes, setDisputes] = useState<Dispute[]>([]);
+  const [disputeOpen, setDisputeOpen] = useState(false);
+  const [disputeItem, setDisputeItem] = useState<DisputeItem | null>(null);
+  const [activeDispute, setActiveDispute] = useState<Dispute | null>(null);
+
+  const load = async () => {
+    if (!user) return;
+    const [{ data: t }, { data: p }, { data: i }, { data: d }] = await Promise.all([
+      supabase
+        .from("revenue_transactions")
+        .select("id, source, description, transaction_date, gross_amount, amount, platform_fee_amount, net_to_artist, currency, settled_payout_id")
+        .eq("user_id", user.id)
+        .order("transaction_date", { ascending: false }),
+      supabase
+        .from("payouts")
+        .select("id, amount, currency, status, reference, period_start, period_end, requested_at, paid_at")
+        .eq("user_id", user.id)
+        .order("requested_at", { ascending: false }),
+      supabase
+        .from("payout_items")
+        .select("id, payout_id, revenue_transaction_id, gross_amount, platform_fee_amount, net_amount, currency, note")
+        .eq("user_id", user.id),
+      supabase
+        .from("payout_disputes")
+        .select("id, payout_item_id, user_id, reason, disputed_amount, status, resolution, created_at, resolved_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false }),
+    ]);
+    setTxs((t || []) as Tx[]);
+    setPayouts((p || []) as Payout[]);
+    setItems((i || []) as Item[]);
+    setDisputes((d || []) as Dispute[]);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    if (!user) return;
-    (async () => {
-      const [{ data: t }, { data: p }, { data: i }] = await Promise.all([
-        supabase
-          .from("revenue_transactions")
-          .select("id, source, description, transaction_date, gross_amount, amount, platform_fee_amount, net_to_artist, currency, settled_payout_id")
-          .eq("user_id", user.id)
-          .order("transaction_date", { ascending: false }),
-        supabase
-          .from("payouts")
-          .select("id, amount, currency, status, reference, period_start, period_end, requested_at, paid_at")
-          .eq("user_id", user.id)
-          .order("requested_at", { ascending: false }),
-        supabase
-          .from("payout_items")
-          .select("id, payout_id, revenue_transaction_id, gross_amount, platform_fee_amount, net_amount, currency, note")
-          .eq("user_id", user.id),
-      ]);
-      setTxs((t || []) as Tx[]);
-      setPayouts((p || []) as Payout[]);
-      setItems((i || []) as Item[]);
-      setLoading(false);
-    })();
+    void load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  const disputeByItem = useMemo(() => {
+    const m: Record<string, Dispute> = {};
+    for (const d of disputes) if (!m[d.payout_item_id]) m[d.payout_item_id] = d;
+    return m;
+  }, [disputes]);
+
+  const openDispute = (it: Item, label: string) => {
+    if (!user) return;
+    setDisputeItem({ ...it, user_id: user.id, label });
+    setActiveDispute(disputeByItem[it.id] ?? null);
+    setDisputeOpen(true);
+  };
 
   const txById = useMemo(() => Object.fromEntries(txs.map((t) => [t.id, t])), [txs]);
 
@@ -234,6 +261,28 @@ export default function Settlement() {
                                       </p>
                                     </div>
                                     <span className="font-heading whitespace-nowrap">{Number(it.net_amount).toFixed(2)} {it.currency}</span>
+                                    {disputeByItem[it.id] ? (
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        className="gap-1"
+                                        onClick={() => openDispute(it, t?.description || t?.source || "Transakcja")}
+                                      >
+                                        <Scale className="h-3.5 w-3.5" />
+                                        <Badge variant={DISPUTE_STATUSES[disputeByItem[it.id].status]?.variant || "secondary"}>
+                                          {DISPUTE_STATUSES[disputeByItem[it.id].status]?.label}
+                                        </Badge>
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className="gap-1"
+                                        onClick={() => openDispute(it, t?.description || t?.source || "Transakcja")}
+                                      >
+                                        <Scale className="h-3.5 w-3.5" /> Zgłoś spór
+                                      </Button>
+                                    )}
                                   </div>
                                 );
                               })}
@@ -249,6 +298,14 @@ export default function Settlement() {
           </CardContent>
         </Card>
       </div>
+
+      <PayoutDisputeDialog
+        open={disputeOpen}
+        onOpenChange={setDisputeOpen}
+        item={disputeItem}
+        dispute={activeDispute}
+        onChanged={load}
+      />
     </DashboardLayout>
   );
 }

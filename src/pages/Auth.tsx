@@ -28,6 +28,12 @@ const fullNameSchema = z.string()
   .max(100, "Imię i nazwisko jest zbyt długie")
   .trim();
 
+function safeNext(raw: string | null): string {
+  if (!raw) return "/dashboard";
+  if (!raw.startsWith("/") || raw.startsWith("//") || raw.includes("://")) return "/dashboard";
+  return raw;
+}
+
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,6 +41,8 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const nextPath = safeNext(searchParams.get("next"));
   const { toast } = useToast();
 
   const [passwordError, setPasswordError] = useState<string | null>(null);

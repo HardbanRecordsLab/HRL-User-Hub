@@ -261,6 +261,28 @@ export default function Settlement() {
                                       </p>
                                     </div>
                                     <span className="font-heading whitespace-nowrap">{Number(it.net_amount).toFixed(2)} {it.currency}</span>
+                                    {disputeByItem[it.id] ? (
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        className="gap-1"
+                                        onClick={() => openDispute(it, t?.description || t?.source || "Transakcja")}
+                                      >
+                                        <Scale className="h-3.5 w-3.5" />
+                                        <Badge variant={DISPUTE_STATUSES[disputeByItem[it.id].status]?.variant || "secondary"}>
+                                          {DISPUTE_STATUSES[disputeByItem[it.id].status]?.label}
+                                        </Badge>
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className="gap-1"
+                                        onClick={() => openDispute(it, t?.description || t?.source || "Transakcja")}
+                                      >
+                                        <Scale className="h-3.5 w-3.5" /> Zgłoś spór
+                                      </Button>
+                                    )}
                                   </div>
                                 );
                               })}
@@ -276,6 +298,14 @@ export default function Settlement() {
           </CardContent>
         </Card>
       </div>
+
+      <PayoutDisputeDialog
+        open={disputeOpen}
+        onOpenChange={setDisputeOpen}
+        item={disputeItem}
+        dispute={activeDispute}
+        onChanged={load}
+      />
     </DashboardLayout>
   );
 }

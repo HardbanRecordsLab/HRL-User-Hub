@@ -35,6 +35,7 @@ const Payouts = lazy(() => import("./pages/Payouts"));
 const Settlement = lazy(() => import("./pages/Settlement"));
 const DistributionTracking = lazy(() => import("./pages/DistributionTracking"));
 const AdminDistribution = lazy(() => import("./pages/AdminDistribution"));
+const AdminDisputes = lazy(() => import("./pages/AdminDisputes"));
 const AIStudio = lazy(() => import("./pages/AIStudio"));
 const StrategyGenerator = lazy(() => import("./pages/StrategyGenerator"));
 const ContentGenerator = lazy(() => import("./pages/ContentGenerator"));

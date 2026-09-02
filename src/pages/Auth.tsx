@@ -70,7 +70,7 @@ export default function AuthPage() {
         throw new Error(nameValidation.error.errors[0].message);
       }
 
-      const redirectUrl = `${window.location.origin}/`;
+      const redirectUrl = `${window.location.origin}${nextPath}`;
       const { error } = await supabase.auth.signUp({
         email: emailValidation.data,
         password: passwordValidation.data,
@@ -96,7 +96,7 @@ export default function AuthPage() {
       });
 
       if (!signInError) {
-        navigate("/dashboard");
+        navigate(nextPath);
       }
     } catch (error: any) {
       toast({
@@ -121,7 +121,7 @@ export default function AuthPage() {
 
       if (error) throw error;
 
-      navigate("/dashboard");
+      navigate(nextPath);
     } catch (error: any) {
       toast({
         title: "Błąd",
